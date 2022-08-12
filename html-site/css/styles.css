@@ -1,21 +1,20 @@
-
-
-
 body {
   background-color: #FCF8E8;
 }
 
 hr {
-border-style: dotted none none;
-height: 0px;
-width: 10%;
-border-width: 8px;
-border-color: #94B49F;
+  border-style: dotted none none;
+  height: 0px;
+  width: 10%;
+  border-width: 8px;
+  border-color: #94B49F;
 
 }
+
 h1 {
-color: #DF7861;
+  color: #DF7861;
 }
+
 h3 {
   color: #94B49F;
 }
