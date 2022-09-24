@@ -3,31 +3,86 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const https = require("https");
+var _ = require("lodash");
+const {
+  lowerCase
+} = require("lodash");
 
-const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
+const homeStartingContent = "Explore our huge selection of delicious recipe ideas including; easy desserts, delicious vegan and vegetarian dinner ideas, gorgeous pasta recipes, quick bakes, family-friendly meals and gluten-free recipes. And create your owm recipes";
+const aboutContent = "Our cookbook is here to help you cook delicious meals with less stress and more joy. We offer recipes and cooking advice for home cooks, by home cooks. Helping create “kitchen wins” is what we’re all about. Simply Recipes was founded in 2003 by Elise Bauer as a home cooking blog to record her favorite family recipes. Today, Simply Recipes has grown into a trusted resource for home cooks with more than 3,000 tested recipes, guides, and meal plans, drawing over 15 million readers each month from around the world. We’re supported by a diverse group of recipe developers, food writers, recipe and product testers, photographers, and other creative professionals.";
+const contactContent = "Have something you’d like to let us know? Whether you have a comment on a recipe or an idea to share, we would love to hear from you: contact@ourcookbook.com.";
 
 const app = express();
 
+let posts = [];
+
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 app.use(express.static("public"));
 
+app.get("/", function (req, res) {
+
+  res.render("home", {
+    startingContent: homeStartingContent,
+    posts: posts
+  });
+});
+
+app.get("/about", function (req, res) {
+
+  res.render("about", {
+    aboutUsContent: aboutContent,
+  });
+});
+
+app.get("/contact", function (req, res) {
+
+  res.render("contact", {
+    contactUsContent: contactContent,
+  });
+});
+
+app.get("/compose", function (req, res) {
+
+  res.render("compose");
+});
 
 
+app.post("/compose", function (req, res) {
+  const newRecipe = {
+    recipeTitle: req.body.titleText,
+    recipeIngredients: req.body.ingredientsText,
+    recipeDirections: req.body.directionsText
+  };
+  posts.push(newRecipe);
+  res.redirect("/");
+});
+
+app.get("/posts/:title", function (req, res) {
+
+  const requestedTitle = _.lowerCase(req.params.title);
+
+  posts.forEach(post => {
+
+    const storedTitle = _.lowerCase(post.recipeTitle);
+
+    if (storedTitle === requestedTitle) {
+      res.render("post", {
+        postTitle: post.recipeTitle,
+        postIngredients: post.recipeIngredients,
+        postDirections: post.recipeDirections
+
+      });
+    }
+  });
+});
 
 
-
-
-
-
-
-
-
-
-
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
