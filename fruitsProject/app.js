@@ -1,7 +1,7 @@
 //jshint esversion:8
 
 const mongoose = require('mongoose');
-const mongoAtlasUri = "mongodb+srv://janeyears:janeantto1511@cluster0.efhqumo.mongodb.net/?retryWrites=true&w=majority";
+const mongoAtlasUri = "mongodb+srv://janeyears:password@cluster0.efhqumo.mongodb.net/?retryWrites=true&w=majority";
 
 try {
     mongoose.connect(
