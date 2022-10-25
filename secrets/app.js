@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
 const encrypt = require("mongoose-encryption");
-const mongoAtlasUri = "mongodb+srv://janeyears:janeantto1511@cluster0.efhqumo.mongodb.net/userDB";
+const mongoAtlasUri = "mongodb+srv://janeyears:<password>@cluster0.efhqumo.mongodb.net/userDB";
 
 const app = express();
 
